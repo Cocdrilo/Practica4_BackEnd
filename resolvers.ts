@@ -115,8 +115,10 @@ export const resolvers = {
     },
     getParts: async (_: unknown, __: unknown, context: {
       partsCollection: Collection<partModel>;
-    }): Promise<partModel[]> => {
-      return context.partsCollection.find().toArray();
+    }): Promise<part[]> => {
+      const partModels = await context.partsCollection.find().toArray();
+      const parts = partModels.map((u) => fromModelToPart(u));
+      return parts;
     },
     getPartsFromVehicle: async (
       _: unknown,
