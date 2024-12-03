@@ -58,6 +58,7 @@ export const resolvers = {
         const parts = await context.partsCollection.find({
           vehicleID: new ObjectId(vehicle.id),
         }).toArray();
+        const part = parts.map((u) => fromModelToPart(u));
         const joke = await getRandomJoke();
         if (!joke) {
           console.log("No deberia pasar nunca");
@@ -65,7 +66,7 @@ export const resolvers = {
         return {
           vehicle,
           joke,
-          parts,
+          part,
         };
       }
     },
