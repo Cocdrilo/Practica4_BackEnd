@@ -14,6 +14,7 @@ export type partModel = OptionalId<{
 
 export type vehicle = {
   id: string;
+  name: string;
   manufacturer: string;
   year: number;
 };
@@ -22,5 +23,12 @@ export type part = {
   id: string;
   name: string;
   price: number;
-  vehicleId : string
+  vehicleID : string
 };
+
+export type vehicleWithJokeAndParts = {
+  vehicle: vehicle;
+  joke: string;
+  parts: part
+}
+

@@ -1,14 +1,14 @@
 import {ApolloServer} from "@apollo/server"
 import {startStandaloneServer} from "@apollo/server/standalone";
-import {MongoClient, ObjectId} from "mongodb"
+import {Collection, MongoClient, ObjectId} from "mongodb"
 import { schemaDB } from "./schema.ts";
 import { resolvers } from "./resolvers.ts";
 import {partModel, vehicleModel} from "./types.ts";
 
-const mongoUrl = Deno.env.get('mongoDB')
+const mongoUrl = "mongodb+srv://cocdrilo:cocdrilo@nebrijatest.n7ral.mongodb.net/?retryWrites=true&w=majority&appName=NebrijaTest";
 if(!mongoUrl){
     console.error('no url in env')
-    Deno.exit(-1)
+    console.error('Error en la URL')
 }
 
 const client = new MongoClient (mongoUrl)
@@ -24,8 +24,8 @@ const server = new ApolloServer({
 });
 
 const { url } = await startStandaloneServer(server, {
-    context: async () => ({ }),
-    listen: { port: 8000 },
+    context:async () => ({vehiclesCollection,partsCollection}),
+    listen: { port: 3500 },
 });
 
 

@@ -14,10 +14,17 @@ type part {
     vehicleID : String!
 }
 
+type vehicleWithJokeAndParts {
+    vehicle: vehicle!
+    joke : String !
+    parts : [part]
+}
+
+
 type Query{
-    getVehicles : [vehicle!]!
-    getVehicle (id: String!) : vehicle
-    getVehiclesByManufacturer(manufacturer: String!) : [vehicle!]!
+    getVehicles : [vehicleWithJokeAndParts!]!
+    getVehicle (id: String!) : vehicleWithJokeAndParts
+    getVehiclesByManufacturer(manufacturer: String!) : [vehicleWithJokeAndParts!]!
     getVehiclesByYearRange (startYear : Int!, endYear : Int!) : [vehicle!]!
 
     getParts : [part!]!
