@@ -22,16 +22,17 @@ export const resolvers = {
         vehicleID: vehicle[0].id,
       }).toArray();
 
-      const joke = await getRandomJoke();
-      if (!joke) {
-        console.log("No deberia pasar nunca");
-      }
       const vehicleWithJoke: vehicleWithJokeAndParts[] = await Promise.all(
         vehicle.map(async (vehicle) => {
           // Obtener las partes del vehículo basado en el ID
           const parts = await context.partsCollection.find({
             vehicleID: new ObjectId(vehicle.id),
           }).toArray();
+
+          const joke = await getRandomJoke();
+          if (!joke) {
+            console.log("No deberia pasar nunca");
+          }
 
           // Retornar el vehículo con su broma y las partes asociadas
           return {
@@ -127,15 +128,16 @@ export const resolvers = {
         partsCollection: Collection<partModel>;
         vehiclesCollection: Collection<vehicleModel>;
       },
-    ): Promise<partModel[]> => {
+    ): Promise<part[]> => {
       const vehicleModel = await context.vehiclesCollection.findOne({
         _id: new ObjectId(args.id),
       });
       if (!vehicleModel) {
         return [];
       }
-      return context.partsCollection.find({ vehicleID: new ObjectId(args.id) })
-        .toArray();
+      const  modelPart = await context.partsCollection.find({ vehicleID: new ObjectId(args.id) }).toArray();
+      const part = modelPart.map((u) => fromModelToPart(u));
+      return part;
     },
   },
   Mutation: {
